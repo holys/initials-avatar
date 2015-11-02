@@ -1,4 +1,4 @@
 #initials-avatar
 
 
-based on @lixiaojun's works.
+based on [@lixiaojun][https://github.com/lixiaojun]'s works.
