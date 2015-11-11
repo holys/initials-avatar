@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	AvatarBgColors = map[string]*color.RGBA{
+	avatarBgColors = map[string]*color.RGBA{
 		"45BDF3": &color.RGBA{69, 189, 243, 255},
 		"E08F70": &color.RGBA{224, 143, 112, 255},
 		"4DB6AC": &color.RGBA{77, 182, 172, 255},
@@ -23,7 +23,7 @@ var (
 		"F1B91D": &color.RGBA{241, 185, 29, 255},
 	}
 
-	DefaultColorKey = "45BDF3"
+	defaultColorKey = "45BDF3"
 
 	ErrUnsupportChar = errors.New("unsupport character")
 
@@ -66,9 +66,9 @@ func isHan(r rune) bool {
 func getColorByName(name string) *color.RGBA {
 	key, err := c.Get(name)
 	if err != nil {
-		key = DefaultColorKey
+		key = defaultColorKey
 	}
-	return AvatarBgColors[key]
+	return avatarBgColors[key]
 }
 
 //TODO: enhance
@@ -80,7 +80,7 @@ func getInitials(name string) string {
 }
 
 func init() {
-	for key := range AvatarBgColors {
+	for key := range avatarBgColors {
 		c.Add(key)
 	}
 }
