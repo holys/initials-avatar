@@ -2,14 +2,13 @@ package avatar
 
 import (
 	"errors"
+	"image"
 	"image/color"
 	"strings"
 	"unicode"
 
 	"stathat.com/c/consistent"
 )
-
-var c = consistent.New()
 
 var (
 	AvatarBgColors = map[string]*color.RGBA{
@@ -27,35 +26,35 @@ var (
 	DefaultColorKey = "45BDF3"
 
 	ErrUnsupportChar = errors.New("unsupport character")
+
+	c = consistent.New()
 )
 
-func init() {
-	for key := range AvatarBgColors {
-		c.Add(key)
-	}
-}
-
 type InitialsAvatar struct {
-	Name     string
-	Initials string
-	Color    *color.RGBA
+	drawer *drawer
 }
 
-func NewInitialsAvatar(name string) (*InitialsAvatar, error) {
+func New(fontFile string) *InitialsAvatar {
+	avatar := new(InitialsAvatar)
+	avatar.drawer = newDrawer(fontFile)
+	return avatar
+}
+func (a *InitialsAvatar) Draw(name string, size int) (image.Image, error) {
+	if size <= 0 {
+		size = 48 // default size
+	}
 	name = strings.TrimSpace(name)
 	firstRune := []rune(name)[0]
 	if !isHan(firstRune) && !unicode.IsLetter(firstRune) {
 		return nil, ErrUnsupportChar
 	}
+	initials := getInitials(name)
+	bgcolor := getColorByName(name)
 
-	avatar := new(InitialsAvatar)
-	avatar.Name = name
-	avatar.Initials = strings.ToUpper(getInitials(name))
-	avatar.Color = getColorByName(name)
-
-	return avatar, nil
+	return a.drawer.Draw(initials, size, bgcolor), nil
 }
 
+// is Chinese?
 func isHan(r rune) bool {
 	if unicode.Is(unicode.Scripts["Han"], r) {
 		return true
@@ -63,6 +62,7 @@ func isHan(r rune) bool {
 	return false
 }
 
+// random color
 func getColorByName(name string) *color.RGBA {
 	key, err := c.Get(name)
 	if err != nil {
@@ -71,10 +71,16 @@ func getColorByName(name string) *color.RGBA {
 	return AvatarBgColors[key]
 }
 
+//TODO: enhance
 func getInitials(name string) string {
 	if len(name) <= 0 {
 		return ""
 	}
-	nameRunes := []rune(name)
-	return string(nameRunes[0])
+	return strings.ToUpper(string([]rune(name)[0]))
+}
+
+func init() {
+	for key := range AvatarBgColors {
+		c.Add(key)
+	}
 }

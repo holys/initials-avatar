@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 
 	"github.com/holys/initials-avatar/avatar"
 	"github.com/labstack/echo"
@@ -30,15 +31,21 @@ func newAvatarHandler(fontFile string) *avatarHandler {
 
 func (h *avatarHandler) Get(ctx *echo.Context) error {
 	name := ctx.Param("name")
-
-	a, err := avatar.NewInitialsAvatar(name)
-
+	size := ctx.Query("size")
+	if size == "" {
+		size = "120"
+	}
+	//FIXME: 文字随图片大小变化而变化
+	sz, err := strconv.Atoi(size)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	g := avatar.NewGenerator(h.fontFile)
-	m := g.Generate(a)
+	a := avatar.New(h.fontFile)
+	m, err := a.Draw(name, sz)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	ctx.Response().Header().Set("Content-Type", "image/png")
 	ctx.Response().Header().Set("Cache-Control", "max-age=600")
