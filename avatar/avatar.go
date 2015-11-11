@@ -25,7 +25,7 @@ var (
 
 	defaultColorKey = "45BDF3"
 
-	ErrUnsupportChar = errors.New("unsupport character")
+	ErrUnsupportChar = errors.New("unsupported character")
 
 	c = consistent.New()
 )
