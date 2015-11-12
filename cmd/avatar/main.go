@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"image/png"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
 
+	"github.com/davecheney/profile"
 	"github.com/holys/initials-avatar/avatar"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
@@ -20,12 +20,12 @@ var (
 )
 
 type avatarHandler struct {
-	fontFile string
+	avatar *avatar.InitialsAvatar
 }
 
 func newAvatarHandler(fontFile string) *avatarHandler {
 	h := new(avatarHandler)
-	h.fontFile = fontFile
+	h.avatar = avatar.New(fontFile)
 	return h
 }
 
@@ -41,8 +41,7 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	a := avatar.New(h.fontFile)
-	m, err := a.Draw(name, sz)
+	data, err := h.avatar.DrawToBytes(name, sz)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -50,11 +49,13 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 	ctx.Response().Header().Set("Content-Type", "image/png")
 	ctx.Response().Header().Set("Cache-Control", "max-age=600")
 	ctx.Response().WriteHeader(http.StatusOK)
+	ctx.Response().Write(data)
 
-	return png.Encode(ctx.Response().Writer(), m)
+	return nil
 }
 
 func main() {
+	defer profile.Start(profile.CPUProfile).Stop()
 	flag.Parse()
 	if len(*fontFile) == 0 {
 		log.Fatal("invalid font file path")

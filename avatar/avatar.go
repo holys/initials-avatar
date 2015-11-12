@@ -1,13 +1,15 @@
 package avatar
 
 import (
+	"bytes"
 	"errors"
 	"image"
 	"image/color"
+	"image/png"
 	"strings"
-	"sync"
 	"unicode"
 
+	"github.com/dchest/lru"
 	"stathat.com/c/consistent"
 )
 
@@ -29,22 +31,19 @@ var (
 	ErrUnsupportChar = errors.New("unsupported character")
 
 	c = consistent.New()
-
-	once         sync.Once
-	globalDrawer *drawer
 )
 
 type InitialsAvatar struct {
 	drawer *drawer
+	cache  *lru.Cache
 }
 
 // New creates an instance of InitialsAvatar
 func New(fontFile string) *InitialsAvatar {
 	avatar := new(InitialsAvatar)
-	once.Do(func() {
-		globalDrawer = newDrawer(fontFile)
-	})
-	avatar.drawer = globalDrawer
+	avatar.drawer = newDrawer(fontFile)
+	avatar.cache = lru.New(lru.Config{MaxItems: 1024})
+
 	return avatar
 }
 
@@ -64,6 +63,37 @@ func (a *InitialsAvatar) Draw(name string, size int) (image.Image, error) {
 	bgcolor := getColorByName(name)
 
 	return a.drawer.Draw(initials, size, bgcolor), nil
+}
+
+func (a *InitialsAvatar) DrawToBytes(name string, size int) ([]byte, error) {
+	if size <= 0 {
+		size = 48 // default size
+	}
+	name = strings.TrimSpace(name)
+	firstRune := []rune(name)[0]
+	if !isHan(firstRune) && !unicode.IsLetter(firstRune) {
+		return nil, ErrUnsupportChar
+	}
+	initials := getInitials(name)
+	bgcolor := getColorByName(name)
+
+	// get from cache
+	v, ok := a.cache.GetBytes(lru.Key(initials))
+	if ok {
+		return v, nil
+	}
+
+	m := a.drawer.Draw(initials, size, bgcolor)
+
+	var buf bytes.Buffer
+	err := png.Encode(&buf, m)
+	if err != nil {
+		return nil, err
+	}
+	// set cache
+	a.cache.SetBytes(lru.Key(initials), buf.Bytes())
+
+	return buf.Bytes(), nil
 }
 
 // is Chinese?
