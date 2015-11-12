@@ -3,7 +3,6 @@ package avatar
 import (
 	"bytes"
 	"errors"
-	"image"
 	"image/color"
 	"image/png"
 	"strings"
@@ -48,23 +47,8 @@ func New(fontFile string) *InitialsAvatar {
 }
 
 // Draw draws an image base on the name and size.
-// only initials of name will be draw.
-// the size is the sidelength of square.
-func (a *InitialsAvatar) Draw(name string, size int) (image.Image, error) {
-	if size <= 0 {
-		size = 48 // default size
-	}
-	name = strings.TrimSpace(name)
-	firstRune := []rune(name)[0]
-	if !isHan(firstRune) && !unicode.IsLetter(firstRune) {
-		return nil, ErrUnsupportChar
-	}
-	initials := getInitials(name)
-	bgcolor := getColorByName(name)
-
-	return a.drawer.Draw(initials, size, bgcolor), nil
-}
-
+// Only initials of name will be draw.
+// The size is the side length of the square image. Image is encoded to bytes.
 func (a *InitialsAvatar) DrawToBytes(name string, size int) ([]byte, error) {
 	if size <= 0 {
 		size = 48 // default size
