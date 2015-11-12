@@ -8,6 +8,7 @@ import (
 	"math"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/hashicorp/golang-lru"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 )
@@ -18,6 +19,7 @@ type drawer struct {
 	dpi         float64
 	fontHinting font.Hinting
 	face        font.Face
+	cache       *lru.Cache
 }
 
 func newDrawer(fontFile string) *drawer {
@@ -38,12 +40,20 @@ func newDrawer(fontFile string) *drawer {
 		DPI:     g.dpi,
 		Hinting: g.fontHinting,
 	})
+	g.cache, err = lru.New(1024 * 1024)
+	if err != nil {
+		panic(err.Error())
+	}
 
 	return g
 }
 
 // our avatar image is square
 func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
+	if v, ok := g.cache.Get(s); ok {
+		return v.(image.Image)
+	}
+
 	// draw the background
 	dst := image.NewRGBA(image.Rect(0, 0, size, size))
 	draw.Draw(dst, dst.Bounds(), &image.Uniform{bg}, image.ZP, draw.Src)
@@ -62,6 +72,7 @@ func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
 	}
 	drawer.DrawString(s)
 
+	g.cache.Add(s, dst)
 	return dst
 }
 
