@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"strings"
+	"sync"
 	"unicode"
 
 	"stathat.com/c/consistent"
@@ -28,17 +29,28 @@ var (
 	ErrUnsupportChar = errors.New("unsupported character")
 
 	c = consistent.New()
+
+	once         sync.Once
+	globalDrawer *drawer
 )
 
 type InitialsAvatar struct {
 	drawer *drawer
 }
 
+// New creates an instance of InitialsAvatar
 func New(fontFile string) *InitialsAvatar {
 	avatar := new(InitialsAvatar)
-	avatar.drawer = newDrawer(fontFile)
+	once.Do(func() {
+		globalDrawer = newDrawer(fontFile)
+	})
+	avatar.drawer = globalDrawer
 	return avatar
 }
+
+// Draw draws an image base on the name and size.
+// only initials of name will be draw.
+// the size is the sidelength of square.
 func (a *InitialsAvatar) Draw(name string, size int) (image.Image, error) {
 	if size <= 0 {
 		size = 48 // default size
