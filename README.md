@@ -1,10 +1,16 @@
 #initials-avatar
 
+Generate an avatar image from a user's initials. Image background color depends on  name hashes(consistent hashing).
+
 [![GoDoc](https://godoc.org/github.com/holys/initials-avatar/avatar?status.svg)](https://godoc.org/github.com/holys/initials-avatar/avatar)
 
-based on [@lixiaojun](https://github.com/lixiaojun)'s works.
 
 
+## Installation
+
+```
+$ make install
+```
 
 
 ## Usage
@@ -21,10 +27,7 @@ b, _ := a.DrawToBytes("David", 128)
 
 ### HTTP Example
 ```
-// compile it 
-$ make 
-
-// run it at :3000 by default.
+// run it at :3000 by default. Assumes $GOBIN is in your $PATH.
 $ avatar
 
 // try it on your browser
@@ -33,6 +36,13 @@ $ avatar
 ```
 
 ![](./resource/images/hello.png)
+
+```
+// Chinese example
+http://127.0.0.1:3000/%E5%AD%94
+```
+
+![](./resource/images/kong.png)
 
 ## HTTP Benchmark
 
@@ -68,5 +78,8 @@ Requests/sec:  42849.74
 Transfer/sec:     19.66MB
 
 ```
+
+Thanks [@lixiaojun](https://github.com/lixiaojun) for his work.
+
 
 
