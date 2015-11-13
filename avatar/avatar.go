@@ -48,7 +48,8 @@ func New(fontFile string) *InitialsAvatar {
 	return avatar
 }
 
-// Config is the configuration object for avatar images.
+// Config is the configuration object for caching avatar images.
+// This is used in the caching algorithm implemented by  https://github.com/dchest/lru
 type Config struct {
 	// Maximum number of items the cache can contain (unlimited by default).
 	MaxItems int
