@@ -9,7 +9,7 @@ Generate an avatar image from a user's initials. Image background color depends 
 ## Installation
 
 ```
-$ make install
+$ go get  github.com/holys/initials-avatar
 ```
 
 
