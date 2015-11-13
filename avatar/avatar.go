@@ -32,6 +32,7 @@ var (
 	c = consistent.New()
 )
 
+// InitialsAvatar represents an initials avatar.
 type InitialsAvatar struct {
 	drawer *drawer
 	cache  *lru.Cache
@@ -39,9 +40,32 @@ type InitialsAvatar struct {
 
 // New creates an instance of InitialsAvatar
 func New(fontFile string) *InitialsAvatar {
+	avatar := NewWithConfig(Config{
+		MaxItems: 1024, // default to 1024 items.
+		FontFile: fontFile,
+	})
+	return avatar
+}
+
+type Config struct {
+	// Maximum number of items the cache can contain (unlimited by default).
+	MaxItems int
+
+	// Maximum byte capacity of cache (unlimited by default).
+	MaxBytes int64
+
+	// TrueType Font file path
+	FontFile string
+}
+
+// NewWithConfig provides config for LRU Cache.
+func NewWithConfig(cfg Config) *InitialsAvatar {
 	avatar := new(InitialsAvatar)
-	avatar.drawer = newDrawer(fontFile)
-	avatar.cache = lru.New(lru.Config{MaxItems: 1024})
+	avatar.drawer = newDrawer(cfg.FontFile)
+	avatar.cache = lru.New(lru.Config{
+		MaxItems: cfg.MaxItems,
+		MaxBytes: cfg.MaxBytes,
+	})
 
 	return avatar
 }
