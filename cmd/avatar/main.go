@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/davecheney/profile"
 	"github.com/holys/initials-avatar/avatar"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
@@ -35,7 +34,7 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 	if size == "" {
 		size = "120"
 	}
-	//FIXME: 文字随图片大小变化而变化
+	//FIXME: auto size
 	sz, err := strconv.Atoi(size)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -55,7 +54,6 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 }
 
 func main() {
-	defer profile.Start(profile.CPUProfile).Stop()
 	flag.Parse()
 	if len(*fontFile) == 0 {
 		log.Fatal("invalid font file path")
@@ -69,7 +67,7 @@ func main() {
 		log.Fatal("invalid font file path")
 	}
 	h := newAvatarHandler(fontFile)
-	e.Get("/avatar/:name", h.Get)
+	e.Get("/:name", h.Get)
 
 	fmt.Printf("starting at :%d ...\n", *port)
 	e.Run(fmt.Sprintf(":%d", *port))
