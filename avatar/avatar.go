@@ -27,6 +27,7 @@ var (
 
 	defaultColorKey = "45BDF3"
 
+	// ErrUnsupportChar is returned when the character is not supported
 	ErrUnsupportChar = errors.New("unsupported character")
 
 	c = consistent.New()
@@ -47,6 +48,7 @@ func New(fontFile string) *InitialsAvatar {
 	return avatar
 }
 
+// Config is the configuration object for avatar images.
 type Config struct {
 	// Maximum number of items the cache can contain (unlimited by default).
 	MaxItems int
@@ -70,7 +72,7 @@ func NewWithConfig(cfg Config) *InitialsAvatar {
 	return avatar
 }
 
-// Draw draws an image base on the name and size.
+// DrawToBytes draws an image base on the name and size.
 // Only initials of name will be draw.
 // The size is the side length of the square image. Image is encoded to bytes.
 func (a *InitialsAvatar) DrawToBytes(name string, size int) ([]byte, error) {
