@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"image/color"
+	"image/jpeg"
 	"image/png"
 	"strings"
 	"unicode"
@@ -30,7 +31,9 @@ var (
 	// ErrUnsupportChar is returned when the character is not supported
 	ErrUnsupportChar = errors.New("unsupported character")
 
-	c = consistent.New()
+	// ErrUnsupportedEncoding is returned when the given image encoding is not supported
+	ErrUnsupportedEncoding = errors.New("avatar: Unsuppored encoding")
+	c                      = consistent.New()
 )
 
 // InitialsAvatar represents an initials avatar.
@@ -76,7 +79,10 @@ func NewWithConfig(cfg Config) *InitialsAvatar {
 // DrawToBytes draws an image base on the name and size.
 // Only initials of name will be draw.
 // The size is the side length of the square image. Image is encoded to bytes.
-func (a *InitialsAvatar) DrawToBytes(name string, size int) ([]byte, error) {
+//
+// You can optionaly specify the encoding of the file. the supported values are png and jpeg for
+// png images and jpeg images respectively. if no encoding is specified then png is used.
+func (a *InitialsAvatar) DrawToBytes(name string, size int, encoding ...string) ([]byte, error) {
 	if size <= 0 {
 		size = 48 // default size
 	}
@@ -96,11 +102,27 @@ func (a *InitialsAvatar) DrawToBytes(name string, size int) ([]byte, error) {
 
 	m := a.drawer.Draw(initials, size, bgcolor)
 
+	// encode the image
 	var buf bytes.Buffer
-	err := png.Encode(&buf, m)
-	if err != nil {
-		return nil, err
+	enc := "png"
+	if len(encoding) > 0 {
+		enc = encoding[0]
 	}
+	switch enc {
+	case "jpeg":
+		err := jpeg.Encode(&buf, m, nil)
+		if err != nil {
+			return nil, err
+		}
+	case "png":
+		err := png.Encode(&buf, m)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, ErrUnsupportedEncoding
+	}
+
 	// set cache
 	a.cache.SetBytes(lru.Key(initials), buf.Bytes())
 

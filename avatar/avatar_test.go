@@ -1,6 +1,9 @@
 package avatar
 
 import (
+	"bytes"
+	"image/jpeg"
+	"image/png"
 	"os"
 	"testing"
 )
@@ -16,19 +19,29 @@ func TestInitialsAvatar_DrawToBytes(t *testing.T) {
 	stuffs := []struct {
 		name      string
 		size      int
+		encoding  string
 		undersize bool
 		oversize  bool
 	}{
-		{"Swordsmen", 22, true, false},
-		{"Condor Heroes", 30, false, false},
-		{"Condor Heroes", 30, false, false},
+		{"Swordsmen", 22, "png", true, false},
+		{"Condor Heroes", 30, "jpeg", false, false},
 		//		{"Condor Heroes", 200, false, true},
 	}
 
 	for _, v := range stuffs {
-		_, err := av.DrawToBytes(v.name, v.size)
+		raw, err := av.DrawToBytes(v.name, v.size, v.encoding)
 		if err != nil {
 			t.Error(err)
+		}
+		switch v.encoding {
+		case "png":
+			if _, perr := png.Decode(bytes.NewReader(raw)); perr != nil {
+				t.Error(perr)
+			}
+		case "jpeg":
+			if _, perr := jpeg.Decode(bytes.NewReader(raw)); perr != nil {
+				t.Error(perr)
+			}
 		}
 	}
 }
