@@ -1,10 +1,10 @@
-.PHONY: test
+.PHONY: test install
 
 fontFile=$(CURDIR)/resource/fonts/Hiragino_Sans_GB_W3.ttf
 all: install
 
 test:
-	@AVATAR_FONT=$(fontFile) go test -v ./avatar
+	@AVATAR_FONT=$(fontFile) go test -v -race -cover ./avatar
   
 install:
 	go get ./...
