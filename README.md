@@ -82,4 +82,6 @@ Transfer/sec:     19.66MB
 Thanks [@lixiaojun](https://github.com/lixiaojun) for his work.
 
 
+## LICENSE 
+MIT LICENSE, see [LICENSE](./LICENSE) for details.
 
