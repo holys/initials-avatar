@@ -1,15 +1,18 @@
 #initials-avatar
 
-Generate an avatar image from a user's initials. Image background color depends on  name hashes(consistent hashing).
 
 [![GoDoc](https://godoc.org/github.com/holys/initials-avatar/avatar?status.svg)](https://godoc.org/github.com/holys/initials-avatar/avatar)
 
 
+Generate an avatar image from a user's initials. Image background color depends on  name hashes(consistent hashing).
+
 
 ## Installation
 
+*VERSION REQUIRED* **GO 1.3 or greater**
+
 ```
-$ go get  github.com/holys/initials-avatar/avatar
+$ go get github.com/holys/initials-avatar/...
 ```
 
 
