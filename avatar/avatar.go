@@ -148,7 +148,7 @@ func getColorByName(name string) *color.RGBA {
 
 //TODO: enhance
 func getInitials(name string) string {
-	if len(name) <= 0 {
+	if len(name) == 0 {
 		return ""
 	}
 	return strings.ToUpper(string([]rune(name)[0]))

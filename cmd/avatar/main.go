@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	fontFile = flag.String("fontFile", "./resource/fonts/Hiragino Sans GB W3.ttf", "tty font file path")
+	fontFile = flag.String("fontFile", "./resource/fonts/Hiragino_Sans_GB_W3.ttf", "tty font file path")
 	port     = flag.Int("port", 3000, "http port to run")
 )
 

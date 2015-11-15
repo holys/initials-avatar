@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image/jpeg"
 	"image/png"
+	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -17,20 +18,22 @@ func TestInitialsAvatar_DrawToBytes(t *testing.T) {
 	av := New(fontFile)
 
 	stuffs := []struct {
-		name      string
-		size      int
-		encoding  string
-		undersize bool
-		oversize  bool
+		name     string
+		size     int
+		encoding string
 	}{
-		{"Swordsmen", 22, "png", true, false},
-		{"Condor Heroes", 30, "jpeg", false, false},
-		//		{"Condor Heroes", 200, false, true},
+		{"Swordsmen", 22, "png"},
+		{"Condor Heroes", 30, "jpeg"},
+		{"Swordsmen", 0, "png"},
+		{"*", 22, "png"},
 	}
 
 	for _, v := range stuffs {
 		raw, err := av.DrawToBytes(v.name, v.size, v.encoding)
 		if err != nil {
+			if err == ErrUnsupportChar {
+				t.Skip("ErrUnsupportChar")
+			}
 			t.Error(err)
 		}
 		switch v.encoding {
@@ -40,7 +43,7 @@ func TestInitialsAvatar_DrawToBytes(t *testing.T) {
 			}
 		case "jpeg":
 			if _, perr := jpeg.Decode(bytes.NewReader(raw)); perr != nil {
-				t.Error(perr)
+				t.Error(perr, v)
 			}
 		}
 	}
@@ -52,6 +55,7 @@ func TestGetInitials(t *testing.T) {
 	}{
 		{"David", "D"},
 		{"Goliath", "G"},
+		{"", ""},
 		//		{"David Goliath", "DG"},
 	}
 
@@ -60,5 +64,21 @@ func TestGetInitials(t *testing.T) {
 		if n != v.intitials {
 			t.Errorf("expected %s got %s", v.intitials, n)
 		}
+	}
+}
+
+func TestGetTTL(t *testing.T) {
+	fileNotExists := "xxxxxxx.ttf"
+	_, err := getTTF(fileNotExists)
+	if err == nil {
+		t.Error("should return error")
+	}
+
+	fileExistsButNotTTF, _ := ioutil.TempFile(os.TempDir(), "prefix")
+	defer os.Remove(fileExistsButNotTTF.Name())
+
+	_, err = getTTF(fileExistsButNotTTF.Name())
+	if err == nil {
+		t.Error("should return error")
 	}
 }
