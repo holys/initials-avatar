@@ -1,6 +1,7 @@
 package avatar
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"image/draw"
@@ -12,6 +13,11 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
+var (
+	errFontRequired = errors.New("font file is required")
+	errInvalidTTF   = errors.New("invalid ttf")
+)
+
 // drawer draws an image.Image
 type drawer struct {
 	fontSize    float64
@@ -20,9 +26,9 @@ type drawer struct {
 	face        font.Face
 }
 
-func newDrawer(fontFile string) *drawer {
+func newDrawer(fontFile string) (*drawer, error) {
 	if fontFile == "" {
-		panic("fontFile must be specific font path")
+		return nil, errFontRequired
 	}
 	g := new(drawer)
 	g.fontSize = 75.0
@@ -31,7 +37,7 @@ func newDrawer(fontFile string) *drawer {
 
 	ttf, err := getTTF(fontFile)
 	if err != nil {
-		panic(err)
+		return nil, errInvalidTTF
 	}
 	g.face = truetype.NewFace(ttf, &truetype.Options{
 		Size:    g.fontSize,
@@ -39,7 +45,7 @@ func newDrawer(fontFile string) *drawer {
 		Hinting: g.fontHinting,
 	})
 
-	return g
+	return g, nil
 }
 
 // our avatar image is square

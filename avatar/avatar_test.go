@@ -74,10 +74,19 @@ func TestGetTTL(t *testing.T) {
 		t.Error("should return error")
 	}
 
+	_, err = newDrawer(fileNotExists)
+	if err == nil {
+		t.Error("should return error")
+	}
+
 	fileExistsButNotTTF, _ := ioutil.TempFile(os.TempDir(), "prefix")
 	defer os.Remove(fileExistsButNotTTF.Name())
 
 	_, err = getTTF(fileExistsButNotTTF.Name())
+	if err == nil {
+		t.Error("should return error")
+	}
+	_, err = newDrawer(fileExistsButNotTTF.Name())
 	if err == nil {
 		t.Error("should return error")
 	}

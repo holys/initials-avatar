@@ -66,8 +66,13 @@ type Config struct {
 
 // NewWithConfig provides config for LRU Cache.
 func NewWithConfig(cfg Config) *InitialsAvatar {
+	var err error
+
 	avatar := new(InitialsAvatar)
-	avatar.drawer = newDrawer(cfg.FontFile)
+	avatar.drawer, err = newDrawer(cfg.FontFile)
+	if err != nil {
+		panic(err.Error())
+	}
 	avatar.cache = lru.New(lru.Config{
 		MaxItems: cfg.MaxItems,
 		MaxBytes: cfg.MaxBytes,
@@ -129,7 +134,7 @@ func (a *InitialsAvatar) DrawToBytes(name string, size int, encoding ...string) 
 	return buf.Bytes(), nil
 }
 
-// is Chinese?
+// Is it Chinese characters?
 func isHan(r rune) bool {
 	if unicode.Is(unicode.Scripts["Han"], r) {
 		return true
