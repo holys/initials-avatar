@@ -24,6 +24,7 @@ func TestInitialsAvatar_DrawToBytes(t *testing.T) {
 	}{
 		{"Swordsmen", 22, "png"},
 		{"Condor Heroes", 30, "jpeg"},
+		{"孔子", 22, "png"},
 		{"Swordsmen", 0, "png"},
 		{"*", 22, "png"},
 	}
@@ -90,4 +91,9 @@ func TestGetTTL(t *testing.T) {
 	if err == nil {
 		t.Error("should return error")
 	}
+	_, err = newDrawer("")
+	if err == nil {
+		t.Error("should return error")
+	}
+
 }
