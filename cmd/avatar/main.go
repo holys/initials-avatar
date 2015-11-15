@@ -1,21 +1,16 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
 
+	"github.com/codegangsta/cli"
 	"github.com/holys/initials-avatar/avatar"
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
-)
-
-var (
-	fontFile = flag.String("fontFile", "./resource/fonts/Hiragino_Sans_GB_W3.ttf", "tty font file path")
-	port     = flag.Int("port", 3000, "http port to run")
 )
 
 type avatarHandler struct {
@@ -53,23 +48,55 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 	return nil
 }
 
-func main() {
-	flag.Parse()
-	if len(*fontFile) == 0 {
-		log.Fatal("invalid font file path")
-	}
+func server(ctx *cli.Context) {
+	fontFile := ctx.String("fontFile")
+	port := ctx.Int("port")
+
 	e := echo.New()
 	e.Use(mw.Logger())
 	e.Use(mw.Recover())
 
-	fontFile, err := filepath.Abs(*fontFile)
+	fFile, err := filepath.Abs(fontFile)
 	if err != nil {
 		log.Fatal("invalid font file path")
 	}
-	h := newAvatarHandler(fontFile)
+	h := newAvatarHandler(fFile)
 	e.Get("/:name", h.Get)
 
-	fmt.Printf("starting at :%d ...\n", *port)
-	e.Run(fmt.Sprintf(":%d", *port))
+	fmt.Printf("starting at :%d ...\n", port)
+	e.Run(fmt.Sprintf(":%d", port))
+}
 
+func serverCommand() cli.Command {
+	return cli.Command{
+		Name:      "server",
+		ShortName: "s",
+		Usage:     "runs the webserver",
+		Action:    server,
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "fontFile",
+				Usage: "tty font file path",
+				Value: "./resource/fonts/Hiragino_Sans_GB_W3.ttf",
+			},
+			cli.IntFlag{
+				Name:  "port",
+				Usage: "http port to run",
+				Value: 3000,
+			},
+		},
+	}
+}
+func main() {
+	a := cli.NewApp()
+	a.Name = "Initials-avatar"
+	a.Version = "0.0.1"
+	a.Usage = "Generate an avatar image from a user's initials"
+	a.Authors = []cli.Author{
+		{"holys", "chendahui007@gmail.com"},
+	}
+	a.Commands = []cli.Command{
+		serverCommand(),
+	}
+	a.RunAndExitOnError()
 }

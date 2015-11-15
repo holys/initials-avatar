@@ -31,11 +31,14 @@ b, _ := a.DrawToBytes("David", 128)
 
 ### HTTP Example
 ```
-// run it at :3000 by default. Assumes $GOBIN is in your $PATH.
+// run the http server. The port is :3000 by default. Assumes $GOBIN is in your $PATH.
 $ avatar
 
 // try it on your browser
 // http://127.0.0.1:3000/hello 
+
+// to view avaliable options
+$ avatar --help
 
 ```
 
