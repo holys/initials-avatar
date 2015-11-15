@@ -53,6 +53,15 @@ http://127.0.0.1:3000/%E5%AD%94
 
 ## HTTP Benchmark
 
+Environment:
+
+```
+MacBook Pro (Retina, 13-inch, Mid 2014)
+Processor: 2.6 GHz Intel Core i5
+Memory: 8 GB 1600 MHz DDR3
+```
+
+
 ### With logger
 
 ```
