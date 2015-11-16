@@ -6,9 +6,7 @@ import (
 	"image/color"
 	"image/draw"
 	"io/ioutil"
-	//"math"
 
-	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -16,7 +14,7 @@ import (
 
 var (
 	errFontRequired = errors.New("font file is required")
-	errInvalidTTF   = errors.New("invalid ttf")
+	errInvalidFont  = errors.New("invalid font")
 )
 
 // drawer draws an image.Image
@@ -37,24 +35,16 @@ func newDrawer(fontFile string) (*drawer, error) {
 	g.dpi = 72.0
 	g.fontHinting = font.HintingNone
 
-	ttf, err := getTTF(fontFile)
+	font, err := parseFont(fontFile)
 	if err != nil {
-		return nil, errInvalidTTF
+		return nil, errInvalidFont
 	}
-	g.face = truetype.NewFace(ttf, &truetype.Options{
+	g.face = truetype.NewFace(font, &truetype.Options{
 		Size:    g.fontSize,
 		DPI:     g.dpi,
 		Hinting: g.fontHinting,
 	})
 
-	fontBytes, err := ioutil.ReadFile(fontFile)
-	if err != nil {
-		return nil, errInvalidTTF
-	}
-	font, err := freetype.ParseFont(fontBytes)
-	if err != nil {
-		return nil, errInvalidTTF
-	}
 	g.font = font
 	return g, nil
 }
@@ -92,9 +82,8 @@ func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
 	y := int(gbuf.Bounds.Max.Y>>6) + dY
 	x := 0 - int(gbuf.Bounds.Min.X>>6) + dX
 
-	//y := 10 + int(math.Ceil(g.fontSize*g.dpi/72)) //FIXME: what does it mean?
 	drawer.Dot = fixed.Point26_6{
-		X: fixed.I(x), //(fixed.I(size) - drawer.MeasureString(s)) / 2,
+		X: fixed.I(x),
 		Y: fixed.I(y),
 	}
 	drawer.DrawString(s)
@@ -102,17 +91,17 @@ func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
 	return dst
 }
 
-// read the font file as *truetype.Font
-func getTTF(fontFile string) (*truetype.Font, error) {
+// parseFont parse the font file as *truetype.Font (TTF)
+func parseFont(fontFile string) (*truetype.Font, error) {
 	fontBytes, err := ioutil.ReadFile(fontFile)
 	if err != nil {
 		return nil, err
 	}
 
-	ttf, err := truetype.Parse(fontBytes)
+	font, err := truetype.Parse(fontBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	return ttf, nil
+	return font, nil
 }

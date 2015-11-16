@@ -68,9 +68,9 @@ func TestGetInitials(t *testing.T) {
 	}
 }
 
-func TestGetTTL(t *testing.T) {
+func TestParseFont(t *testing.T) {
 	fileNotExists := "xxxxxxx.ttf"
-	_, err := getTTF(fileNotExists)
+	_, err := parseFont(fileNotExists)
 	if err == nil {
 		t.Error("should return error")
 	}
@@ -83,7 +83,7 @@ func TestGetTTL(t *testing.T) {
 	fileExistsButNotTTF, _ := ioutil.TempFile(os.TempDir(), "prefix")
 	defer os.Remove(fileExistsButNotTTF.Name())
 
-	_, err = getTTF(fileExistsButNotTTF.Name())
+	_, err = parseFont(fileExistsButNotTTF.Name())
 	if err == nil {
 		t.Error("should return error")
 	}
