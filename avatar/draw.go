@@ -6,8 +6,9 @@ import (
 	"image/color"
 	"image/draw"
 	"io/ioutil"
-	"math"
+	//"math"
 
+	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -24,6 +25,7 @@ type drawer struct {
 	dpi         float64
 	fontHinting font.Hinting
 	face        font.Face
+	font        *truetype.Font
 }
 
 func newDrawer(fontFile string) (*drawer, error) {
@@ -45,6 +47,15 @@ func newDrawer(fontFile string) (*drawer, error) {
 		Hinting: g.fontHinting,
 	})
 
+	fontBytes, err := ioutil.ReadFile(fontFile)
+	if err != nil {
+		return nil, errInvalidTTF
+	}
+	font, err := freetype.ParseFont(fontBytes)
+	if err != nil {
+		return nil, errInvalidTTF
+	}
+	g.font = font
 	return g, nil
 }
 
@@ -61,9 +72,29 @@ func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
 		Face: g.face,
 	}
 
-	y := 10 + int(math.Ceil(g.fontSize*g.dpi/72)) //FIXME: what does it mean?
+	// font index
+	fi := g.font.Index([]rune(s)[0])
+
+	// glyph example: http://www.freetype.org/freetype2/docs/tutorial/metrics.png
+	var gbuf truetype.GlyphBuf
+	var err error
+	var _fsize fixed.Int26_6 = fixed.Int26_6(g.fontSize * g.dpi * (64.0 / 72.0))
+	err = gbuf.Load(g.font, _fsize, fi, font.HintingFull)
+	if err != nil {
+		// fixme
+		drawer.DrawString("")
+		return dst
+	}
+
+	// center
+	dY := int((size - int(gbuf.Bounds.Max.Y-gbuf.Bounds.Min.Y)>>6) / 2)
+	dX := int((size - int(gbuf.Bounds.Max.X-gbuf.Bounds.Min.X)>>6) / 2)
+	y := int(gbuf.Bounds.Max.Y>>6) + dY
+	x := 0 - int(gbuf.Bounds.Min.X>>6) + dX
+
+	//y := 10 + int(math.Ceil(g.fontSize*g.dpi/72)) //FIXME: what does it mean?
 	drawer.Dot = fixed.Point26_6{
-		X: (fixed.I(size) - drawer.MeasureString(s)) / 2,
+		X: fixed.I(x), //(fixed.I(size) - drawer.MeasureString(s)) / 2,
 		Y: fixed.I(y),
 	}
 	drawer.DrawString(s)
