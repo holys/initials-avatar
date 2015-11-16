@@ -57,7 +57,7 @@ func TestGetInitials(t *testing.T) {
 		{"David", "D"},
 		{"Goliath", "G"},
 		{"", ""},
-		//		{"David Goliath", "DG"},
+		{"David Goliath", "DG"},
 	}
 
 	for _, v := range names {
