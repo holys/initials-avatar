@@ -153,10 +153,23 @@ func getColorByName(name string) *color.RGBA {
 
 //TODO: enhance
 func getInitials(name string) string {
-	if len(name) == 0 {
-		return ""
+	names := strings.Split(name, " ")
+	var short string
+	switch len(names) {
+	case 1:
+		short = geFirstChar(names[0])
+	case 2:
+		short = geFirstChar(names[0]) + geFirstChar(names[1])
 	}
-	return strings.ToUpper(string([]rune(name)[0]))
+	return short
+}
+
+func geFirstChar(src string) string {
+	src = strings.TrimSpace(src)
+	if len(src) > 0 {
+		return string(src[0])
+	}
+	return ""
 }
 
 func init() {
