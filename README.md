@@ -38,7 +38,7 @@ $ avatar server
 // http://127.0.0.1:3000/hello 
 
 // to view avaliable options
-$ avatar --help
+$ avatar server --help
 
 ```
 
