@@ -1,0 +1,58 @@
+{
+	"ImportPath": "github.com/holys/initials-avatar",
+	"GoVersion": "go1.5.1",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-139-g142e6cd",
+			"Rev": "142e6cd241a4dfbf7f07a018f1f8225180018da4"
+		},
+		{
+			"ImportPath": "github.com/dchest/lru",
+			"Rev": "d8fd1e40a385d18b4a774dcb66ecdca4375fa8dc"
+		},
+		{
+			"ImportPath": "github.com/golang/freetype/raster",
+			"Comment": "release-120-gf29eb11",
+			"Rev": "f29eb116deb328d02ee5c573f02d442ca67d5532"
+		},
+		{
+			"ImportPath": "github.com/golang/freetype/truetype",
+			"Comment": "release-120-gf29eb11",
+			"Rev": "f29eb116deb328d02ee5c573f02d442ca67d5532"
+		},
+		{
+			"ImportPath": "github.com/labstack/echo",
+			"Comment": "v1.2.0-20-g143f563",
+			"Rev": "143f563734f7892110fd67c3ebb38c411f74d3bf"
+		},
+		{
+			"ImportPath": "github.com/labstack/gommon/color",
+			"Comment": "v0.0.3-7-g3c61341",
+			"Rev": "3c613419957bbd5afea3fc87bbc0f9f2dca19196"
+		},
+		{
+			"ImportPath": "golang.org/x/image/font",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		},
+		{
+			"ImportPath": "golang.org/x/image/math/fixed",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		},
+		{
+			"ImportPath": "golang.org/x/net/http2",
+			"Rev": "1d9fd3b8333e891c0e7353e1adcfe8a612573033"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "1d9fd3b8333e891c0e7353e1adcfe8a612573033"
+		},
+		{
+			"ImportPath": "stathat.com/c/consistent",
+			"Rev": "748f01b59d1b2218efe39513039e9ee31266d7c7"
+		}
+	]
+}
