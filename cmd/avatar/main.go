@@ -53,6 +53,9 @@ func server(ctx *cli.Context) {
 	fontFile := ctx.String("fontFile")
 	// port := ctx.Int("port")
 	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 
 	e := echo.New()
 	e.Use(mw.Logger())
