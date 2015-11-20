@@ -3,7 +3,7 @@
   "description": "Go Getting Started Example App",
   "keywords": [
     "avatar",
-    "go",
+    "go"
   ],
   "image": "heroku/go:1.5",
   "mount_dir": "src/github.com/holys/initials-avatar",
