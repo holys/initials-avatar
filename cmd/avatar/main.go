@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -50,7 +51,8 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 
 func server(ctx *cli.Context) {
 	fontFile := ctx.String("fontFile")
-	port := ctx.Int("port")
+	// port := ctx.Int("port")
+	port := os.Getenv("PORT")
 
 	e := echo.New()
 	e.Use(mw.Logger())
@@ -63,8 +65,8 @@ func server(ctx *cli.Context) {
 	h := newAvatarHandler(fFile)
 	e.Get("/:name", h.Get)
 
-	fmt.Printf("starting at :%d ...\n", port)
-	e.Run(fmt.Sprintf(":%d", port))
+	fmt.Printf("starting at :%s ...\n", port)
+	e.Run(fmt.Sprintf(":%s", port))
 }
 
 func serverCommand() cli.Command {
