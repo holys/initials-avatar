@@ -22,7 +22,7 @@ func newAvatarHandler(fontFile string) *avatarHandler {
 	h := new(avatarHandler)
 	// h.avatar = avatar.New(fontFile)
 	// specially for heroku app (with 512MB  RAM)
-	cfg := avatar.Config{MaxBytes: 1024 * 1024 * 256}
+	cfg := avatar.Config{MaxBytes: 1024 * 1024 * 256, FontFile: fontFile}
 	h.avatar = avatar.NewWithConfig(cfg)
 	return h
 }
