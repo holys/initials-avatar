@@ -1,0 +1,12 @@
+{
+  "name": "initials-avatar",
+  "description": "Go Getting Started Example App",
+  "keywords": [
+    "avatar",
+    "go",
+  ],
+  "image": "heroku/go:1.5",
+  "mount_dir": "src/github.com/holys/initials-avatar",
+  "website": "http://github.com/holys/initials-avatar",
+  "repository": "http://github.com/holys/initials-avatar"
+}

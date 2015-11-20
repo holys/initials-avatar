@@ -20,7 +20,10 @@ type avatarHandler struct {
 
 func newAvatarHandler(fontFile string) *avatarHandler {
 	h := new(avatarHandler)
-	h.avatar = avatar.New(fontFile)
+	// h.avatar = avatar.New(fontFile)
+	// specially for heroku app (with 512MB  RAM)
+	cfg := avatar.Config{MaxBytes: 1024 * 1024 * 256}
+	h.avatar = avatar.NewWithConfig(cfg)
 	return h
 }
 
@@ -52,6 +55,7 @@ func (h *avatarHandler) Get(ctx *echo.Context) error {
 func server(ctx *cli.Context) {
 	fontFile := ctx.String("fontFile")
 	// port := ctx.Int("port")
+	// for heroku
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("$PORT must be set")
