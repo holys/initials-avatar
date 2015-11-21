@@ -8,6 +8,12 @@
 Generate an avatar image from a user's initials. Image background color depends on  name hashes(consistent hashing).
 
 
+## Online Demo
+
+https://initials.herokuapp.com 
+
+You may switch to [heroku-branch](https://github.com/holys/initials-avatar/tree/feature-heroku) to see how to deploy to heroku.
+
 ## Installation
 
 *VERSION REQUIRED* **GO 1.3 or greater**
