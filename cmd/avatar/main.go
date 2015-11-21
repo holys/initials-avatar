@@ -71,6 +71,9 @@ func server(ctx *cli.Context) {
 	}
 	h := newAvatarHandler(fFile)
 	e.Get("/:name", h.Get)
+	e.Static("/", "public")
+	e.Static("/js/", "public/js")
+	e.Static("/css/", "public/css")
 
 	fmt.Printf("starting at :%s ...\n", port)
 	e.Run(fmt.Sprintf(":%s", port))

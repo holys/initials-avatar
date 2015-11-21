@@ -10,9 +10,7 @@ Generate an avatar image from a user's initials. Image background color depends 
 
 ## Online Demo (heroku)
 
-```
 https://initials.herokuapp.com/a
-```
 
 
 ## Installation
