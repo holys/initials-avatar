@@ -31,9 +31,7 @@ body {
   margin-top: 10px;
 }
 
-* {
-    margin: 0;
-}
+
 html, body {
     height: 100%;
 }
@@ -45,10 +43,5 @@ html, body {
 }
 .push {height: 155px;}
 .footer {
-  /*position: absolute;*/
-  /*bottom: 0;*/
-  /*width: 100%;*/
-  /* Set the fixed height of the footer here */
   height: 155px;
-  /*background-color: #f5f5f5;*/
 }

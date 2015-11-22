@@ -1,4 +1,3 @@
-/*Uses https://github.com/stewartlord/identicon.js and http://caligatio.github.io/jsSHA/  */
 function get_identicon (text) {
 	text = text.trim();
 	if (text == "") {
