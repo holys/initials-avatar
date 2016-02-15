@@ -68,8 +68,8 @@ func (g *drawer) Draw(s string, size int, bg *color.RGBA) image.Image {
 	// glyph example: http://www.freetype.org/freetype2/docs/tutorial/metrics.png
 	var gbuf truetype.GlyphBuf
 	var err error
-	var _fsize fixed.Int26_6 = fixed.Int26_6(g.fontSize * g.dpi * (64.0 / 72.0))
-	err = gbuf.Load(g.font, _fsize, fi, font.HintingFull)
+	fsize := fixed.Int26_6(g.fontSize * g.dpi * (64.0 / 72.0))
+	err = gbuf.Load(g.font, fsize, fi, font.HintingFull)
 	if err != nil {
 		// fixme
 		drawer.DrawString("")
