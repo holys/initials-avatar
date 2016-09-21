@@ -1,0 +1,15 @@
+package: github.com/holys/initials-avatar
+import:
+- package: github.com/codegangsta/cli
+- package: github.com/dchest/lru
+- package: github.com/golang/freetype
+  subpackages:
+  - truetype
+- package: github.com/labstack/echo
+  subpackages:
+  - middleware
+- package: golang.org/x/image
+  subpackages:
+  - font
+  - math/fixed
+- package: stathat.com/c/consistent
