@@ -1,31 +1,24 @@
-hash: aabb10bf7ca5acd9792210a46a784acf855bd0bcfc4b3dd8c53fa4199025ada0
-updated: 2016-09-21T12:00:16.947605111+08:00
+hash: 12b72589318de53a2e260d4c28ed935e70cb9092f81447cdaa63c6ec213bb165
+updated: 2016-09-22T09:38:07.059354103+08:00
 imports:
 - name: github.com/codegangsta/cli
   version: d53eb991652b1d438abdd34ce4bfa3ef1539108e
 - name: github.com/dchest/lru
   version: d8fd1e40a385d18b4a774dcb66ecdca4375fa8dc
-- name: github.com/dgrijalva/jwt-go
-  version: 24c63f56522a87ec5339cc3567883f1039378fdb
 - name: github.com/golang/freetype
   version: 38b4c392adc5eed94207994c4848fff99f4ac234
   subpackages:
   - raster
   - truetype
 - name: github.com/labstack/echo
-  version: 862bee4ebd5fdb34323ba86936e8b25fd6753f83
+  version: 5789bde991cc5c41536e4fd82cc0107e7cd3d0eb
   subpackages:
-  - context
-  - engine
-  - log
   - middleware
 - name: github.com/labstack/gommon
   version: 431777a5117c8de4352a400dad1e2a55f484b189
   subpackages:
-  - bytes
   - color
   - log
-  - random
 - name: github.com/mattn/go-colorable
   version: ed8eb9e318d7a84ce5915b495b7d35e0cfe7b5a8
 - name: github.com/mattn/go-isatty
@@ -38,13 +31,16 @@ imports:
   - font
   - math/fixed
 - name: golang.org/x/net
-  version: f4fe4abe3c785295ddf81c7f1823bcd3bad391b6
+  version: 6d3beaea10370160dea67f5c9327ed791afd5389
   subpackages:
   - context
+  - websocket
 - name: golang.org/x/sys
   version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
   subpackages:
   - unix
+- name: gopkg.in/labstack/echo.v1
+  version: 5789bde991cc5c41536e4fd82cc0107e7cd3d0eb
 - name: stathat.com/c/consistent
   version: 748f01b59d1b2218efe39513039e9ee31266d7c7
 testImports: []

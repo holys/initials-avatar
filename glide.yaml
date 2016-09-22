@@ -6,6 +6,7 @@ import:
   subpackages:
   - truetype
 - package: github.com/labstack/echo
+  version: 5789bde991cc5c41536e4fd82cc0107e7cd3d0eb
   subpackages:
   - middleware
 - package: golang.org/x/image
