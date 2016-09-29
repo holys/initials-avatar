@@ -156,7 +156,12 @@ func getInitials(name string) string {
 	if len(name) == 0 {
 		return ""
 	}
-	return strings.ToUpper(string([]rune(name)[0]))
+	o := opts{
+		allowEmail: true,
+		limit:      3,
+	}
+	i, _ := parseInitials(strings.NewReader(name), o)
+	return i
 }
 
 func init() {
