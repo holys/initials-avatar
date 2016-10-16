@@ -54,10 +54,13 @@ func TestGetInitials(t *testing.T) {
 	names := []struct {
 		full, intitials string
 	}{
-		{"David", "D"},
-		{"Goliath", "G"},
+		{"John", "J"},
+		{"Doe", "D"},
 		{"", ""},
-		//		{"David Goliath", "DG"},
+		{"John Doe", "JD"},
+		{"john doe", "jd"},
+		{"joe@example.com", "j"},
+		{"John Doe (dj)", "dj"},
 	}
 
 	for _, v := range names {
