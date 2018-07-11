@@ -62,6 +62,9 @@ type Config struct {
 
 	// TrueType Font file path
 	FontFile string
+
+	// TrueType Font size
+	FontSize float64
 }
 
 // NewWithConfig provides config for LRU Cache.
@@ -69,7 +72,7 @@ func NewWithConfig(cfg Config) *InitialsAvatar {
 	var err error
 
 	avatar := new(InitialsAvatar)
-	avatar.drawer, err = newDrawer(cfg.FontFile)
+	avatar.drawer, err = newDrawer(cfg.FontFile, cfg.FontSize)
 	if err != nil {
 		panic(err.Error())
 	}
