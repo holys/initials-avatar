@@ -26,12 +26,12 @@ type drawer struct {
 	font        *truetype.Font
 }
 
-func newDrawer(fontFile string) (*drawer, error) {
+func newDrawer(fontFile string, fontSize float64) (*drawer, error) {
 	if fontFile == "" {
 		return nil, errFontRequired
 	}
 	g := new(drawer)
-	g.fontSize = 75.0
+	g.fontSize = fontSize
 	g.dpi = 72.0
 	g.fontHinting = font.HintingNone
 
