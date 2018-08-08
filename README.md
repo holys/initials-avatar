@@ -1,4 +1,4 @@
-#initials-avatar
+# initials-avatar
 
 [![Build Status](https://travis-ci.org/holys/initials-avatar.svg?branch=master)](https://travis-ci.org/holys/initials-avatar)
 [![Coverage Status](https://coveralls.io/repos/holys/initials-avatar/badge.svg?branch=master&service=github)](https://coveralls.io/github/holys/initials-avatar?branch=master)
