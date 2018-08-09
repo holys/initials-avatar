@@ -1,0 +1,22 @@
+Go package lru implements Least Recently Used cache algorithm.
+
+Cache capacity can be optionally limited by both size in bytes and a number
+of items. Items can keep track of their modification and access time.
+
+INSTALLATION
+
+	$ go get github.com/dchest/lru
+
+DOCUMENTATION
+
+	See http://godoc.org/github.com/dchest/lru
+
+
+ACKNOWLEDGEMENTS
+
+Some code structure ideas are inspired by YouTube's Vitess implementation of
+LRU cache, but no code was taken from it:
+https://github.com/youtube/vitess/blob/master/go/cache/lru_cache.go
+
+Thanks to Chaker Nakhli (@nakhli)  for the article:
+http://www.sinbadsoft.com/blog/a-lru-cache-implementation/
