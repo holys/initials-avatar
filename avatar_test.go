@@ -9,6 +9,10 @@ import (
 	"testing"
 )
 
+const (
+	testFontSize = 75.0
+)
+
 func TestInitialsAvatar_DrawToBytes(t *testing.T) {
 	fontFile := os.Getenv("AVATAR_FONT")
 	if fontFile == "" {
@@ -78,7 +82,7 @@ func TestParseFont(t *testing.T) {
 		t.Error("should return error")
 	}
 
-	_, err = newDrawer(fileNotExists)
+	_, err = newDrawer(fileNotExists, testFontSize)
 	if err == nil {
 		t.Error("should return error")
 	}
@@ -90,11 +94,11 @@ func TestParseFont(t *testing.T) {
 	if err == nil {
 		t.Error("should return error")
 	}
-	_, err = newDrawer(fileExistsButNotTTF.Name())
+	_, err = newDrawer(fileExistsButNotTTF.Name(), testFontSize)
 	if err == nil {
 		t.Error("should return error")
 	}
-	_, err = newDrawer("")
+	_, err = newDrawer("", testFontSize)
 	if err == nil {
 		t.Error("should return error")
 	}
