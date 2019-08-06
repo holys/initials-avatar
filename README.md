@@ -43,7 +43,7 @@ $ avatar server
 // try it on your browser
 // http://127.0.0.1:3000/hello 
 
-// to view avaliable options
+// to view available options
 $ avatar server --help
 
 ```
