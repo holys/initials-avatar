@@ -28,6 +28,9 @@ var (
 
 	defaultColorKey = "45BDF3"
 
+	// ErrEmptyName is returned when the name is an empty string
+	ErrEmptyName = errors.New("name is empty")
+	
 	// ErrUnsupportChar is returned when the character is not supported
 	ErrUnsupportChar = errors.New("unsupported character")
 
@@ -95,6 +98,11 @@ func (a *InitialsAvatar) DrawToBytes(name string, size int, encoding ...string) 
 		size = 48 // default size
 	}
 	name = strings.TrimSpace(name)
+
+	if len([]rune(name)) == 0 {
+		return nil, ErrEmptyName
+	}
+	
 	firstRune := []rune(name)[0]
 	if !isHan(firstRune) && !unicode.IsLetter(firstRune) {
 		return nil, ErrUnsupportChar
